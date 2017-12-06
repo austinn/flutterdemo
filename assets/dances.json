@@ -1,0 +1,37 @@
+[
+	{
+		"index": 0,
+		"name": "House Party",
+		"rating": 3.5,
+		"choreographer": "Austin Nelson",
+		"level": "Beginner"
+	},
+	{
+		"index": 1,
+		"name": "Get Ugly",
+		"rating": 4.5,
+		"choreographer": "Austin Nelson",
+		"level": "Intermediate"
+	},
+	{
+		"index": 2,
+		"name": "Dessert",
+		"rating": 4.7,
+		"choreographer": "Austin Nelson",
+		"level": "Advanced"
+	},
+	{
+		"index": 3,
+		"name": "Backwood Bump",
+		"rating": 4.6,
+		"choreographer": "Austin Nelson",
+		"level": "Intermediate"
+	},
+	{
+		"index": 4,
+		"name": "You Broke Up With Me",
+		"rating": 4.0,
+		"choreographer": "Austin Nelson",
+		"level": "Beginner"
+	}
+]
