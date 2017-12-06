@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:listviewsample/models/dance.dart';
 import 'detail.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -20,7 +21,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
 
-  List data;
+  List<Dance> data;
 
   Future<String> _loadJSONAsset() async {
     return await rootBundle.loadString('assets/dances.json');
@@ -31,9 +32,13 @@ class HomePageState extends State<HomePage> {
     setData(jsonDances);
   }
 
-  void setData(json) {
+  void setData(jsonString) {
     this.setState(() {
-      data = JSON.decode(json);
+      data = new List<Dance>();
+      List temp = JSON.decode(jsonString);
+      for (var i = 0; i < temp.length; i++) {
+        this.data.add(new Dance(temp[i]));
+      }
     });
   }
 
@@ -50,22 +55,7 @@ class HomePageState extends State<HomePage> {
         title: new Text("Listview Sample"),
       ),
       floatingActionButton: new FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-                new PageRouteBuilder(
-                    pageBuilder: (BuildContext context, _, __) {
-                      return new DetailPage("yolo");
-                    },
-                    transitionsBuilder: (_, Animation<double> animation, __,
-                        Widget child) {
-                      return new FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    }
-                )
-            );
-          }
+          onPressed: () {}
       ),
       body: new ListView.builder(
           itemCount: (null == data) ? 0 : data.length,
@@ -76,33 +66,33 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildItem(BuildContext context, int index) {
     return new CardItem(
-            () {
-          Navigator.of(context).push(
-              new PageRouteBuilder(
-                  pageBuilder: (BuildContext context, _, __) {
-                    return new DetailPage(data[index]["name"]);
-                  },
-                  transitionsBuilder: (_, Animation<double> animation, __,
-                      Widget child) {
-                    return new FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  }
-              )
-          );
-        },
-        data[index]["name"]
+      onTap: () {
+        Navigator.of(context).push(
+            new PageRouteBuilder(
+                pageBuilder: (BuildContext context, _, __) {
+                  return new DetailPage(data[index].name);
+                },
+                transitionsBuilder: (_, Animation<double> animation, __,
+                    Widget child) {
+                  return new FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                }
+            )
+        );
+      },
+      dance: data[index],
     );
   }
 }
 
 class CardItem extends StatelessWidget {
 
-  VoidCallback onTap;
-  var text;
+  final VoidCallback onTap;
+  final Dance dance;
 
-  CardItem(this.onTap, this.text);
+  CardItem({this.onTap, this.dance});
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +100,7 @@ class CardItem extends StatelessWidget {
       onTap: onTap,
       child: new Card(
         child: new Container(
-          child: new Text(this.text),
+          child: new Text(dance.name),
           padding: new EdgeInsets.all(12.0),
         ),
       ),
