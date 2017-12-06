@@ -51,9 +51,20 @@ class HomePageState extends State<HomePage> {
       ),
       floatingActionButton: new FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, new MaterialPageRoute(
-              builder: (BuildContext context) => new DetailPage("page2"),
-            ));
+            Navigator.of(context).push(
+                new PageRouteBuilder(
+                    pageBuilder: (BuildContext context, _, __) {
+                      return new DetailPage("yolo");
+                    },
+                    transitionsBuilder: (_, Animation<double> animation, __,
+                        Widget child) {
+                      return new FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    }
+                )
+            );
           }
       ),
       body: new ListView.builder(
@@ -63,17 +74,23 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  void clickMe(index) {
-
-  }
-
   Widget _buildItem(BuildContext context, int index) {
     return new CardItem(
             () {
-          Navigator.push(context, new MaterialPageRoute(
-            builder: (BuildContext context) =>
-            new DetailPage(data[index]["name"]),
-          ));
+          Navigator.of(context).push(
+              new PageRouteBuilder(
+                  pageBuilder: (BuildContext context, _, __) {
+                    return new DetailPage(data[index]["name"]);
+                  },
+                  transitionsBuilder: (_, Animation<double> animation, __,
+                      Widget child) {
+                    return new FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  }
+              )
+          );
         },
         data[index]["name"]
     );
