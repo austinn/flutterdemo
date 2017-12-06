@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'dance_list_item.dart';
+import 'detail.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -51,24 +51,52 @@ class HomePageState extends State<HomePage> {
       ),
       floatingActionButton: new FloatingActionButton(
           onPressed: () {
-            loadDances();
+            Navigator.push(context, new MaterialPageRoute(
+              builder: (BuildContext context) => new DetailPage("page2"),
+            ));
           }
       ),
       body: new ListView.builder(
-        itemCount: (null == data) ? 0 : data.length,
-        itemBuilder: (BuildContext context, int index) {
-          return new Card(
-              child: _listRowItemDance(data[index]['name']),
-          );
-        },
+          itemCount: (null == data) ? 0 : data.length,
+          itemBuilder: _buildItem
       ),
     );
   }
 
-  Widget _listRowItemDance(text) {
-    return new Container(
-      child: new Text(text),
-      padding: new EdgeInsets.all(12.0),
+  void clickMe(index) {
+
+  }
+
+  Widget _buildItem(BuildContext context, int index) {
+    return new CardItem(
+            () {
+          Navigator.push(context, new MaterialPageRoute(
+            builder: (BuildContext context) =>
+            new DetailPage(data[index]["name"]),
+          ));
+        },
+        data[index]["name"]
+    );
+  }
+}
+
+class CardItem extends StatelessWidget {
+
+  VoidCallback onTap;
+  var text;
+
+  CardItem(this.onTap, this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      onTap: onTap,
+      child: new Card(
+        child: new Container(
+          child: new Text(this.text),
+          padding: new EdgeInsets.all(12.0),
+        ),
+      ),
     );
   }
 }
